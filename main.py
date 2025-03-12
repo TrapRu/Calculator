@@ -67,19 +67,19 @@ class App(customtkinter.CTk):
             self.grid_rowconfigure(4, weight=10)
 
             # Функциональные кнопки
-            self.button_plus = customtkinter.CTkButton(self, text="+", width=button_size, height=button_size, command=self.emt)
+            self.button_plus = customtkinter.CTkButton(self, text="+", width=button_size, height=button_size, command=lambda:self.entry_text(self.button_plus.cget("text")))
             self.button_plus.grid(row=1, column=3, padx=padx, pady=pady)
 
-            self.button_minus = customtkinter.CTkButton(self, text="-", width=button_size, height=button_size, command=self.emt)
+            self.button_minus = customtkinter.CTkButton(self, text="-", width=button_size, height=button_size, command=lambda:self.entry_text(self.button_minus.cget("text")))
             self.button_minus.grid(row=2, column=3, padx=padx, pady=pady)
 
-            self.button_multiplication = customtkinter.CTkButton(self, text="x", width=button_size, height=button_size, command=self.emt)
+            self.button_multiplication = customtkinter.CTkButton(self, text="x", width=button_size, height=button_size, command=lambda:self.entry_text(self.button_multiplication.cget("text")))
             self.button_multiplication.grid(row=3, column=3, padx=padx, pady=pady)
 
-            self.button_division = customtkinter.CTkButton(self, text="/", width=button_size, height=button_size, command=self.emt)
+            self.button_division = customtkinter.CTkButton(self, text="/", width=button_size, height=button_size, command=lambda:self.entry_text(self.button_division.cget("text")))
             self.button_division.grid(row=4, column=3, padx=padx, pady=pady)
 
-            self.button_result = customtkinter.CTkButton(self, text="=", width=button_size, height=button_size, command=self.emt)
+            self.button_result = customtkinter.CTkButton(self, text="=", width=button_size, height=button_size, command=lambda:self.entry_text(self.button_result.cget("text")))
             self.button_result.grid(row=4, column=0, columnspan=3, padx=padx, pady=pady)
         
         
