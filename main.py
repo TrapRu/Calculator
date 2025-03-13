@@ -2,19 +2,6 @@ import customtkinter
 import moex
 flag_change = 0
 
-class App(customtkinter.CTk):
-    def emt(self):
-            print("ЧО КАК")
-
-    def entry_text(self,text):
-        self.entry.configure(state = "normal")
-        self.entry.insert('end',text)
-        self.entry.configure(state = "disabled")
-
-    import customtkinter
-import moex
-flag_change = 0
-
 class App(customtkinter.CTk):  
     def result_entry(self):
         result = eval(self.entry.get())
