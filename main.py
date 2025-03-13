@@ -1,5 +1,6 @@
 import customtkinter
-flag_change = 0
+import moex
+flag_change = 1
 
 class App(customtkinter.CTk):
     def emt(self):
@@ -124,6 +125,8 @@ class App(customtkinter.CTk):
             self.grid_rowconfigure(2, weight=10)
             self.grid_rowconfigure(3, weight=10)
             self.grid_rowconfigure(4, weight=10)
-            
+"""
+moex.get_moex_currency_rates() 
+"""
 app = App()
 app.mainloop()
