@@ -1,8 +1,24 @@
 import customtkinter
 import moex
-flag_change = 0
 
 class App(customtkinter.CTk):  
+    # Функция "Калькулятор валют"
+    def currency_calculator(self):
+        print(":)")
+
+    def change_flag(self, choice):
+        if choice == "Калькулятор":
+            self.flag_change = 0
+            self.calc()
+        elif choice == "Калькулятор валют":
+            self.flag_change = 1
+            self.currency_calculator()
+        print(choice)
+        
+    #todo Функция открытия истории
+    def history(self):
+        print(":)")
+        
     def result_entry(self):
         result = eval(self.entry.get())
         self.entry.delete('0', 'end')
@@ -16,16 +32,31 @@ class App(customtkinter.CTk):
 
         # Настройки приложения
         self.geometry("300x400")
+        self.minsize(250, 250)
         self.title("Calculator")
         padx = 5
         pady = 5
         button_size = 9999
+        self.flag_change = 0
         my_font = customtkinter.CTkFont(family="Fira Code", size=30)
         button_font = customtkinter.CTkFont(family="Fira Code", size=20)
+        
         # Виджеты
-             
+        self.options = ["Калькулятор", "Калькулятор валют"]
+        self.option_menu = self.option_menu = customtkinter.CTkOptionMenu(self, values=self.options, width=self.button_size, command=self.change_flag)
+        self.option_menu.grid(row=0, column=0, columnspan=3, padx=self.padx, pady=self.pady, sticky="w")
+
+        self.button_history = customtkinter.CTkButton(self, text="📝", width=self.button_size, command=self.history)
+        self.button_history.grid(row=0, column=3, padx=self.padx, pady=self.pady)
+            
+        # Режим калькулятора
+        if self.flag_change == 0:
+            self.calc()
+        if self.flag_change == 1:
+            self.currency_calculator()  
+            
         # Цифры
-        if flag_change == 0:
+        def calc(self):
             self.entry = customtkinter.CTkEntry(self, width=9999, fg_color= "#242424", border_color= "#242424", height=80, font = my_font, takefocus = True)
             self.entry.grid(row=0, column=0, columnspan=4, padx=padx, pady=pady)
             self.update()
@@ -102,12 +133,7 @@ class App(customtkinter.CTk):
             
             self.button_root = customtkinter.CTkButton(self, text="√", fg_color= "#474747",width=button_size, height=button_size, font = button_font,command=lambda:self.entry_text(self.button_root.cget("text")))
             self.button_root.grid(row=1, column=2, columnspan=1, padx=padx, pady=pady)
-
-        
-        
-        
-
-# !moex.get_moex_currency_rates() 
+   
 
 app = App()
 app.mainloop()
