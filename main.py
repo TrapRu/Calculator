@@ -1,4 +1,5 @@
 import customtkinter
+import moex
 
 class App(customtkinter.CTk):
     
@@ -112,5 +113,6 @@ class App(customtkinter.CTk):
         self.grid_rowconfigure(3, weight=10)
         self.grid_rowconfigure(4, weight=10)
         self.grid_rowconfigure(5, weight=10)
+
 app = App()
 app.mainloop()
