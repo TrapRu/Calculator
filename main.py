@@ -1,15 +1,15 @@
 import customtkinter
 import moex
-flag_change = 1
+flag_change = 0
 
-class App(customtkinter.CTk):
-    def emt(self):
-            print("ЧО КАК")
+class App(customtkinter.CTk): 
+    def result_entry(self):
+        result = eval(self.entry.get())
+        self.entry.delete('0', 'end')
+        self.entry.insert('end',result)
 
     def entry_text(self,text):
-        self.entry.configure(state = "normal")
         self.entry.insert('end',text)
-        self.entry.configure(state = "disabled")
 
     def __init__(self):
         super().__init__()
@@ -26,7 +26,7 @@ class App(customtkinter.CTk):
             
         # Цифры
         if flag_change == 0:
-            self.entry = customtkinter.CTkEntry(self, width=button_size, state = "disabled")
+            self.entry = customtkinter.CTkEntry(self, width=button_size)
             self.entry.grid(row=0, column=0, columnspan=4, padx=padx, pady=pady)
 
             self.button_7 = customtkinter.CTkButton(self, text="7", width=button_size, height=button_size, command=lambda:self.entry_text(self.button_7.cget("text")))
@@ -74,13 +74,13 @@ class App(customtkinter.CTk):
             self.button_minus = customtkinter.CTkButton(self, text="-", width=button_size, height=button_size, command=lambda:self.entry_text(self.button_minus.cget("text")))
             self.button_minus.grid(row=2, column=3, padx=padx, pady=pady)
 
-            self.button_multiplication = customtkinter.CTkButton(self, text="x", width=button_size, height=button_size, command=lambda:self.entry_text(self.button_multiplication.cget("text")))
+            self.button_multiplication = customtkinter.CTkButton(self, text="*", width=button_size, height=button_size, command=lambda:self.entry_text(self.button_multiplication.cget("text")))
             self.button_multiplication.grid(row=3, column=3, padx=padx, pady=pady)
 
             self.button_division = customtkinter.CTkButton(self, text="/", width=button_size, height=button_size, command=lambda:self.entry_text(self.button_division.cget("text")))
             self.button_division.grid(row=4, column=3, padx=padx, pady=pady)
 
-            self.button_result = customtkinter.CTkButton(self, text="=", width=button_size, height=button_size, command=lambda:self.entry_text(self.button_result.cget("text")))
+            self.button_result = customtkinter.CTkButton(self, text="=", width=button_size, height=button_size, command=self.result_entry)
             self.button_result.grid(row=4, column=0, columnspan=3, padx=padx, pady=pady)
         
         
