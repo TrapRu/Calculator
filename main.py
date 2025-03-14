@@ -2,6 +2,10 @@ import customtkinter
 import moex
 from math import *
 
+# Устанавливаем тёмную тему
+customtkinter.set_appearance_mode("dark")  # "dark", "light", "system"
+
+# Окно истории вычислений
 class history_window(customtkinter.CTkToplevel):
     def __init__(self, mass_result, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -15,14 +19,16 @@ class history_window(customtkinter.CTkToplevel):
         self.grid_columnconfigure(0, weight=10)
         self.grid_rowconfigure(0, weight=10)
 
+        print(self.mass_result)
         for i in range(len(mass_result)):
             self.textbox.insert("end", mass_result[i][0])
-            self.textbox.insert("end", "\n")
+            #self.textbox.insert("end", "\n")
             self.textbox.insert("end", "=")
             self.textbox.insert("end", mass_result[i][1])
             self.textbox.insert("end", "\n"*2)
         self.textbox.configure(state="disabled")
 
+# Приложение
 class App(customtkinter.CTk):
     # Функция "Калькулятор валют"
     def currency_calculator(self):
@@ -37,11 +43,8 @@ class App(customtkinter.CTk):
         # Виджеты
         self.options = ["Калькулятор", "Калькулятор валют"]
         self.option_menu = self.option_menu = customtkinter.CTkOptionMenu(self, values=self.options, fg_color= "#474747", button_color= "#474747", width=self.button_size, command=self.change_flag)
-        self.option_menu.grid(row=0, column=0, columnspan=2, padx=self.padx, pady=self.pady, sticky="w")
+        self.option_menu.grid(row=0, column=0, columnspan=3, padx=self.padx, pady=self.pady, sticky="w")
         self.option_menu.set("Калькулятор валют")
-
-        self.button_history = customtkinter.CTkButton(self, text="📝", fg_color= "#474747", width=self.button_size, command=self.history)
-        self.button_history.grid(row=0, column=2, padx=self.padx, pady=self.pady)
 
         self.options = ["Доллар", "Рубль"]
         self.option_1 = self.option_menu = customtkinter.CTkOptionMenu(self, values=self.options, fg_color= "#474747", button_color= "#474747", width=self.button_size, command=self.change_flag)
@@ -57,35 +60,41 @@ class App(customtkinter.CTk):
         self.entry_2 = customtkinter.CTkEntry(self, width=9999, fg_color= "#242424", border_color= "#242424", height=40, font = my_font, takefocus = True)
         self.entry_2.grid(row=4, column=0, columnspan=3, padx=self.padx, pady=self.pady)
 
-        self.button_7 = customtkinter.CTkButton(self, text="7", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry_text(self.button_7.cget("text")))
+        self.button_7 = customtkinter.CTkButton(self, text="7", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry1_text(self.button_7.cget("text")))
         self.button_7.grid(row=5, column=0, padx=self.padx, pady=self.pady)
 
-        self.button_8 = customtkinter.CTkButton(self, text="8", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry_text(self.button_8.cget("text")))
+        self.button_8 = customtkinter.CTkButton(self, text="8", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry1_text(self.button_8.cget("text")))
         self.button_8.grid(row=5, column=1, padx=self.padx, pady=self.pady)
 
-        self.button_9 = customtkinter.CTkButton(self, text="9", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry_text(self.button_9.cget("text")))
+        self.button_9 = customtkinter.CTkButton(self, text="9", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry1_text(self.button_9.cget("text")))
         self.button_9.grid(row=5, column=2, padx=self.padx, pady=self.pady)
 
-        self.button_4 = customtkinter.CTkButton(self, text="4", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry_text(self.button_4.cget("text")))
+        self.button_4 = customtkinter.CTkButton(self, text="4", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry1_text(self.button_4.cget("text")))
         self.button_4.grid(row=6, column=0, padx=self.padx, pady=self.pady)
 
-        self.button_5 = customtkinter.CTkButton(self, text="5", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry_text(self.button_5.cget("text")))
+        self.button_5 = customtkinter.CTkButton(self, text="5", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry1_text(self.button_5.cget("text")))
         self.button_5.grid(row=6, column=1, padx=self.padx, pady=self.pady)
 
-        self.button_6 = customtkinter.CTkButton(self, text="6", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry_text(self.button_6.cget("text")))
+        self.button_6 = customtkinter.CTkButton(self, text="6", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry1_text(self.button_6.cget("text")))
         self.button_6.grid(row=6, column=2, padx=self.padx, pady=self.pady)
 
-        self.button_1 = customtkinter.CTkButton(self, text="1", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry_text(self.button_1.cget("text")))
+        self.button_1 = customtkinter.CTkButton(self, text="1", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry1_text(self.button_1.cget("text")))
         self.button_1.grid(row=7, column=0, padx=self.padx, pady=self.pady)
 
-        self.button_2 = customtkinter.CTkButton(self, text="2", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry_text(self.button_2.cget("text")))
+        self.button_2 = customtkinter.CTkButton(self, text="2", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry1_text(self.button_2.cget("text")))
         self.button_2.grid(row=7, column=1, padx=self.padx, pady=self.pady)
 
-        self.button_3 = customtkinter.CTkButton(self, text="3", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry_text(self.button_3.cget("text")))
+        self.button_3 = customtkinter.CTkButton(self, text="3", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry1_text(self.button_3.cget("text")))
         self.button_3.grid(row=7, column=2, padx=self.padx, pady=self.pady)
             
-        self.button_0 = customtkinter.CTkButton(self, text="0", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry_text(self.button_0.cget("text")))
+        self.button_0 = customtkinter.CTkButton(self, text="0", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry1_text(self.button_0.cget("text")))
         self.button_0.grid(row=8, column=1, padx=self.padx, pady=self.pady)
+
+        self.button_00 = customtkinter.CTkButton(self, text="00", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry1_text(self.button_00.cget("text")))
+        self.button_00.grid(row=8, column=2, padx=self.padx, pady=self.pady)
+
+        self.button_dot = customtkinter.CTkButton(self, text=".", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry1_text(self.button_dot.cget("text")))
+        self.button_dot.grid(row=8, column=0, padx=self.padx, pady=self.pady)
 
         #Настройка сетки
         self.grid_columnconfigure(0, weight=10)
@@ -102,7 +111,6 @@ class App(customtkinter.CTk):
         self.grid_rowconfigure(6, weight=10)
         self.grid_rowconfigure(7, weight=10)
         self.grid_rowconfigure(8, weight=10)
-        print(":)")
 
     # Функция "Калькулятор"
     def calc(self):
@@ -219,13 +227,18 @@ class App(customtkinter.CTk):
         self.entry.delete('insert - 1c')
 
     def result_entry(self):
+        self.mass_result.append([self.entry.get('0.0', 'end')])
+
         calculate = self.entry.get('0.0', 'end')
         calculate = calculate.replace("√","sqrt")
         calculate = calculate.replace("x", "*")
         calculate = calculate.replace("^", "**")
+
         result = eval(calculate)
+        
         self.entry.delete('0.0', 'end')
         self.entry.insert('0.0', result)
+        self.mass_result[len(self.mass_result)-1].append(result)
 
     def on_key_press(self, event):
         # Получаем текущий текст из виджета
@@ -239,6 +252,9 @@ class App(customtkinter.CTk):
 
     def entry_text(self,text):
         self.entry.insert('insert',text)
+
+    def entry1_text(self,text):
+        self.entry_1.insert('insert',text)
 
     def root(self):
         self.entry.insert('insert','√()')
@@ -256,8 +272,6 @@ class App(customtkinter.CTk):
         self.toplevel_window = None
         self.a = 10
         self.mass_result = [] # Массив ответов для истории
-        self.mass_result.append(["5+43", 2.55]) #! Удалить!!! Пример массива ответа
-        self.mass_result.append(["1337+228", 3]) #! Удалить!!! Пример массива ответа
             
         # Режим калькулятора
         if self.flag_change == 0:
