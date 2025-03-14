@@ -46,18 +46,20 @@ class App(customtkinter.CTk):
         self.option_menu.grid(row=0, column=0, columnspan=3, padx=self.padx, pady=self.pady, sticky="w")
         self.option_menu.set("Калькулятор валют")
 
-        self.options = ["Доллар", "Рубль"]
-        self.option_1 = self.option_menu = customtkinter.CTkOptionMenu(self, values=self.options, fg_color= "#474747", button_color= "#474747", width=self.button_size, command=self.change_flag)
+        self.options = ["Доллар", "Евро", "Юань", "Рубль"]
+        self.option_1 = self.option_menu = customtkinter.CTkOptionMenu(self, values=self.options, fg_color= "#474747", button_color= "#474747", width=self.button_size, command=self.on_key_press_2)
         self.option_1.grid(row=1, column=0, columnspan=3, padx=self.padx, pady=self.pady, sticky="w")
+        self.option_1.set("Рубль")
 
         self.entry_1 = customtkinter.CTkEntry(self, width=9999, fg_color= "#242424", border_color= "#242424", height=40, font = my_font, takefocus = True)
         self.entry_1.grid(row=2, column=0, columnspan=3, padx=self.padx, pady=self.pady)
+        self.entry_1.bind("<KeyRelease>", self.on_key_press_2)
         
-        self.options = ["Доллар", "Рубль"]
-        self.option_2 = self.option_menu = customtkinter.CTkOptionMenu(self, values=self.options, fg_color= "#474747", button_color= "#474747", width=self.button_size, command=self.change_flag)
+        self.options = ["Доллар", "Евро", "Юань", "Рубль"]
+        self.option_2 = self.option_menu = customtkinter.CTkOptionMenu(self, values=self.options, fg_color= "#474747", button_color= "#474747", width=self.button_size, command=self.on_key_press_2)
         self.option_2.grid(row=3, column=0, columnspan=3, padx=self.padx, pady=self.pady, sticky="w")
 
-        self.entry_2 = customtkinter.CTkEntry(self, width=9999, fg_color= "#242424", border_color= "#242424", height=40, font = my_font, takefocus = True)
+        self.entry_2 = customtkinter.CTkEntry(self, width=9999, fg_color= "#242424", border_color= "#242424", height=40, font = my_font, takefocus = True, state = 'disabled')
         self.entry_2.grid(row=4, column=0, columnspan=3, padx=self.padx, pady=self.pady)
 
         self.button_7 = customtkinter.CTkButton(self, text="7", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry1_text(self.button_7.cget("text")))
@@ -249,6 +251,54 @@ class App(customtkinter.CTk):
             self.entry.delete("1.0", "end")
             self.entry.insert("1.0", text.replace("\n", ""))
             self.result_entry()
+    
+    def on_key_press_2(self, event):
+        unconverted = float(self.entry_1.get())
+        converted = float(0)
+        dollar = float(self.currency_rates.get('USD/RUB', 0))
+        euro = float(self.currency_rates.get('EUR/RUB', 0))
+        yuan = float(self.currency_rates.get('CNY/RUB', 0))
+        if self.option_1.get() == "Рубль":
+            if self.option_2.get() == "Доллар":
+                converted = round(unconverted / dollar, 2) 
+            elif self.option_2.get() == "Евро":
+                converted = round(unconverted / euro, 2) 
+            elif self.option_2.get() == "Юань":
+                converted = round(unconverted / yuan, 2) 
+            elif self.option_2.get() == "Рубль":
+                converted = float(self.entry_1.get())
+        elif self.option_1.get() == "Доллар":
+            if self.option_2.get() == "Рубль":
+                converted = round(unconverted * dollar, 2) 
+            elif self.option_2.get() == "Евро":
+                converted = round(unconverted * dollar / euro, 2) 
+            elif self.option_2.get() == "Юань":
+                converted = round(unconverted * dollar / yuan, 2)
+            elif self.option_2.get() == "Доллар":
+                converted = float(self.entry_1.get())
+        elif self.option_1.get() == "Евро":
+            if self.option_2.get() == "Доллар":
+                converted = round(unconverted * euro / dollar, 2) 
+            elif self.option_2.get() == "Рубль":
+                converted = round(unconverted * euro, 2) 
+            elif self.option_2.get() == "Юань":
+                converted = round(unconverted * euro / yuan, 2)
+            elif self.option_2.get() == "Евро":
+                converted = float(self.entry_1.get())
+        elif self.option_1.get() == "Юань":
+            if self.option_2.get() == "Доллар":
+                converted = round(unconverted * yuan / dollar, 2) 
+            elif self.option_2.get() == "Евро":
+                converted = round(unconverted * yuan / euro, 2) 
+            elif self.option_2.get() == "Рубль":
+                converted = round(unconverted * yuan, 2)
+            elif self.option_2.get() == "Юань":
+                converted = float(self.entry_1.get())
+        converted = round(converted, 2)
+        self.entry_2.configure(state = 'normal')
+        self.entry_2.delete("0", "end")
+        self.entry_2.insert('0', converted)
+        self.entry_2.configure(state = 'disabled')
 
     def entry_text(self,text):
         self.entry.insert('insert',text)
@@ -261,6 +311,7 @@ class App(customtkinter.CTk):
 
     def __init__(self):
         super().__init__()
+        self.currency_rates = moex.get_moex_currency_rates()
 
         # Настройки приложения
         self.geometry("300x400")

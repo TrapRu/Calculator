@@ -8,13 +8,13 @@ def get_moex_currency_rates():
             'iss.meta': 'off'
         }
 
-        print('[Debug 1] Отправка запроса...')
+        #print('[Debug 1] Отправка запроса...')
         response = requests.get(url, params=params)
         response.raise_for_status()
         print(f'[Debug 2] Статус ответа: {response.status_code}')
 
         data = response.json()
-        print('[Debug 3] Получены сырые данные:', data)  # Для анализа структуры
+        #print('[Debug 3] Получены сырые данные:', data)  # Для анализа структуры
 
         rates = {}
         
@@ -22,14 +22,16 @@ def get_moex_currency_rates():
         if 'securities' not in data or 'data' not in data['securities']:
             print('[Ошибка] Некорректная структура ответа API')
             return None
-
-        print('[Debug 4] Обработка данных...')
+        
+        #print('[Debug 4] Обработка данных...')
         for item in data['securities']['data']:
-            print('[Debug] Текущий элемент:', item)  # Показывает структуру элемента
+            #print('[Debug] Текущий элемент:', item)  # Показывает структуру элемента
             if item[2] == 'USD/RUB':
                 rates['USD/RUB'] = item[3]
             elif item[2] == 'EUR/RUB':
                 rates['EUR/RUB'] = item[3]
+            elif item[2] == 'CNY/RUB':
+                rates['CNY/RUB'] = item[3]
     
         print('[Debug 5] Результат:', rates)
         return rates
