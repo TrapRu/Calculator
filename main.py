@@ -1,5 +1,6 @@
 import customtkinter
 import moex
+from math import *
 
 class App(customtkinter.CTk):  
     
@@ -162,7 +163,7 @@ class App(customtkinter.CTk):
         self.button_degree = customtkinter.CTkButton(self, text="^", fg_color= "#474747",width=self.button_size, height=self.button_size,font = button_font, command=lambda:self.entry_text(self.button_degree.cget("text")))
         self.button_degree.grid(row=2, column=1, columnspan=1, padx=self.padx, pady=self.pady)
         
-        self.button_root = customtkinter.CTkButton(self, text="√", fg_color= "#474747",width=self.button_size, height=self.button_size, font = button_font,command=lambda:self.entry_text(self.button_root.cget("text")))
+        self.button_root = customtkinter.CTkButton(self, text="√", fg_color= "#474747",width=self.button_size, height=self.button_size, font = button_font,command=self.root)
         self.button_root.grid(row=2, column=2, columnspan=1, padx=self.padx, pady=self.pady)
 
         #Настройка сетки
@@ -196,6 +197,9 @@ class App(customtkinter.CTk):
 
     def result_entry(self):
         calculate = self.entry.get('0.0', 'end')
+        calculate = calculate.replace("√","sqrt")
+        calculate = calculate.replace("x", "*")
+        calculate = calculate.replace("^", "**")
         result = eval(calculate)
         self.entry.delete('0.0', 'end')
         self.entry.insert('0.0', result)
@@ -212,6 +216,9 @@ class App(customtkinter.CTk):
 
     def entry_text(self,text):
         self.entry.insert('insert',text)
+
+    def root(self):
+        self.entry.insert('insert','√()')
 
     def __init__(self):
         super().__init__()
