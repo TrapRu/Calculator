@@ -189,7 +189,7 @@ class App(customtkinter.CTk):
     #todo Функция открытия истории
     def history(self):
         print(":)")
-   
+
     def result_entry(self):
         result = eval(self.entry.get())
         self.entry.delete('0', 'end')
@@ -208,6 +208,7 @@ class App(customtkinter.CTk):
         self.pady = 5
         self.button_size = 9999
         self.flag_change = 0
+
             
         # Режим калькулятора
         if self.flag_change == 0:
