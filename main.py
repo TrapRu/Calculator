@@ -2,6 +2,10 @@ import customtkinter
 import moex
 from math import *
 
+# Устанавливаем тёмную тему
+customtkinter.set_appearance_mode("dark")  # "dark", "light", "system"
+
+# Окно истории вычислений
 class history_window(customtkinter.CTkToplevel):
     def __init__(self, mass_result, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -24,6 +28,7 @@ class history_window(customtkinter.CTkToplevel):
             self.textbox.insert("end", "\n"*2)
         self.textbox.configure(state="disabled")
 
+# Приложение
 class App(customtkinter.CTk):
     # Функция "Калькулятор валют"
     def currency_calculator(self):
