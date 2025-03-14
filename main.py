@@ -2,8 +2,28 @@ import customtkinter
 import moex
 from math import *
 
-class App(customtkinter.CTk):  
-    
+class history_window(customtkinter.CTkToplevel):
+    def __init__(self, mass_result, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.geometry("400x300")
+        self.title("Calculation history")
+        self.mass_result = mass_result
+        my_font = customtkinter.CTkFont(family="Fira Code", size=20)
+
+        self.textbox = customtkinter.CTkTextbox(self, width=10000, height=10000, font=my_font)
+        self.textbox.grid(row=0, column=0, padx=5, pady=5)
+        self.grid_columnconfigure(0, weight=10)
+        self.grid_rowconfigure(0, weight=10)
+
+        for i in range(len(mass_result)):
+            self.textbox.insert("end", mass_result[i][0])
+            self.textbox.insert("end", "\n")
+            self.textbox.insert("end", "=")
+            self.textbox.insert("end", mass_result[i][1])
+            self.textbox.insert("end", "\n"*2)
+        self.textbox.configure(state="disabled")
+
+class App(customtkinter.CTk):
     # Функция "Калькулятор валют"
     def currency_calculator(self):
         self.minsize(300,400)
@@ -28,14 +48,14 @@ class App(customtkinter.CTk):
         self.option_1.grid(row=1, column=0, columnspan=3, padx=self.padx, pady=self.pady, sticky="w")
 
         self.entry_1 = customtkinter.CTkEntry(self, width=9999, fg_color= "#242424", border_color= "#242424", height=40, font = my_font, takefocus = True)
-        self.entry_1.grid(row=2, column=0, columnspan=2, padx=self.padx, pady=self.pady)
+        self.entry_1.grid(row=2, column=0, columnspan=3, padx=self.padx, pady=self.pady)
         
         self.options = ["Доллар", "Рубль"]
         self.option_2 = self.option_menu = customtkinter.CTkOptionMenu(self, values=self.options, fg_color= "#474747", button_color= "#474747", width=self.button_size, command=self.change_flag)
         self.option_2.grid(row=3, column=0, columnspan=3, padx=self.padx, pady=self.pady, sticky="w")
 
         self.entry_2 = customtkinter.CTkEntry(self, width=9999, fg_color= "#242424", border_color= "#242424", height=40, font = my_font, takefocus = True)
-        self.entry_2.grid(row=4, column=0, columnspan=2, padx=self.padx, pady=self.pady)
+        self.entry_2.grid(row=4, column=0, columnspan=3, padx=self.padx, pady=self.pady)
 
         self.button_7 = customtkinter.CTkButton(self, text="7", fg_color= "#808080", width=self.button_size, height=self.button_size, font = button_font, command=lambda:self.entry_text(self.button_7.cget("text")))
         self.button_7.grid(row=5, column=0, padx=self.padx, pady=self.pady)
@@ -188,9 +208,12 @@ class App(customtkinter.CTk):
             self.currency_calculator()
         print(choice)
         
-    #todo Функция открытия истории
+    # Функция открытия истории
     def history(self):
-        print(":)")
+        if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
+            self.toplevel_window = history_window(self.mass_result)  # create window if its None or destroyed
+        else:
+            self.toplevel_window.focus()  # if window exists focus it
 
     def backspace(self):
         self.entry.delete('insert - 1c')
@@ -230,14 +253,17 @@ class App(customtkinter.CTk):
         self.pady = 5
         self.button_size = 9999
         self.flag_change = 0
-
+        self.toplevel_window = None
+        self.a = 10
+        self.mass_result = [] # Массив ответов для истории
+        self.mass_result.append(["5+43", 2.55]) #! Удалить!!! Пример массива ответа
+        self.mass_result.append(["1337+228", 3]) #! Удалить!!! Пример массива ответа
             
         # Режим калькулятора
         if self.flag_change == 0:
             self.calc()
         if self.flag_change == 1:
             self.currency_calculator()      
-   
 
 app = App()
 app.mainloop()
