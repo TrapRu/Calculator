@@ -101,8 +101,9 @@ class App(customtkinter.CTk):
         self.button_history = customtkinter.CTkButton(self, text="📝", fg_color= "#474747", width=self.button_size, command=self.history)
         self.button_history.grid(row=0, column=3, padx=self.padx, pady=self.pady)
 
-        self.entry = customtkinter.CTkEntry(self, width=9999, fg_color= "#242424", border_color= "#242424", height=80, font = my_font, takefocus = True)
+        self.entry = customtkinter.CTkTextbox(self, width=9999, fg_color= "#242424", border_color= "#242424", height=1, font = my_font, takefocus = True, wrap = 'none')
         self.entry.grid(row=1, column=0, columnspan=4, padx=self.padx, pady=self.pady)
+        self.entry.bind("<KeyRelease>", self.on_key_press)
         self.update()
         self.entry.focus_set()
 
@@ -143,7 +144,7 @@ class App(customtkinter.CTk):
         self.button_plus = customtkinter.CTkButton(self, text="+",  fg_color= "#474747",width=self.button_size, height=self.button_size,  font = button_font,command=lambda:self.entry_text(self.button_plus.cget("text")))
         self.button_plus.grid(row=3, column=3, padx=self.padx, pady=self.pady)
         
-        self.button_backspace = customtkinter.CTkButton(self, text="↫",  fg_color= "#474747",width=self.button_size, height=self.button_size,  font = button_font,command=lambda:self.entry_text(self.button_backspace.cget("text")))
+        self.button_backspace = customtkinter.CTkButton(self, text="↫",  fg_color= "#474747",width=self.button_size, height=self.button_size,  font = button_font,command=self.backspace)
         self.button_backspace.grid(row=2, column=3, padx=self.padx, pady=self.pady)
 
         self.button_minus = customtkinter.CTkButton(self, text="-", fg_color= "#474747",width=self.button_size, height=self.button_size, font = button_font,command=lambda:self.entry_text(self.button_minus.cget("text")))
@@ -190,10 +191,24 @@ class App(customtkinter.CTk):
     def history(self):
         print(":)")
 
+    def backspace(self):
+        self.entry.delete('insert - 1c')
+
     def result_entry(self):
-        result = eval(self.entry.get())
-        self.entry.delete('0', 'end')
-        self.entry.insert('end', result)
+        calculate = self.entry.get('0.0', 'end')
+        result = eval(calculate)
+        self.entry.delete('0.0', 'end')
+        self.entry.insert('0.0', result)
+
+    def on_key_press(self, event):
+        # Получаем текущий текст из виджета
+        text = self.entry.get("1.0", "end-1c")
+        
+        # Если текст содержит символ новой строки, удаляем его и вызываем функцию равенства
+        if "\n" in text:
+            self.entry.delete("1.0", "end")
+            self.entry.insert("1.0", text.replace("\n", ""))
+            self.result_entry()
 
     def entry_text(self,text):
         self.entry.insert('insert',text)
